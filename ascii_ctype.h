@@ -28,6 +28,7 @@
 namespace ascii
 {
 
+// 0x0000'0001'0000'0100  0x0000'0000'0000'0000
 constexpr
 inline
 bool
@@ -36,6 +37,7 @@ isblank(char c) noexcept
     return c == ' ' || c == '\t';
 }
 
+// 0x0000'03FF'0000'0000  0x0000'0000'0000'0000
 constexpr
 inline
 bool
@@ -44,6 +46,7 @@ isdigit(char c) noexcept
     return '0' <= c && c <= '9';
 }
 
+// 0x0000'03FF'0000'0000  0x0000'007E'0000'007E
 constexpr
 inline
 bool
@@ -52,6 +55,7 @@ isxdigit(char c) noexcept
     return isdigit(c) || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f');
 }
 
+// 0x0000'0000'0000'0000  0x07FF'FFFE'0000'0000
 constexpr
 inline
 bool
@@ -60,6 +64,7 @@ islower(char c) noexcept
     return 'a' <= c && c <= 'z';
 }
 
+// 0x0000'0000'0000'0000  0x0000'0000'07FF'FFFE
 constexpr
 inline
 bool
@@ -68,6 +73,7 @@ isupper(char c) noexcept
     return 'A' <= c && c <= 'Z';
 }
 
+// 0x0000'0001'0000'1F00  0x0000'0000'0000'0000
 constexpr
 inline
 bool
@@ -76,6 +82,7 @@ isspace(char c) noexcept
     return c == ' ' || (0x09 <= c && c <= 0x0D);
 }
 
+// 0xFC00'FFFE'0000'0000  0x7800'0001'F800'0001
 constexpr
 inline
 bool
@@ -88,6 +95,7 @@ ispunct(char c) noexcept
     return ctype[uc >> 6] & (std::uint64_t{1} << (uc & 0x3F));
 }
 
+// 0x0000'0000'0000'0000  0x07FF'FFFE'07FF'FFFE
 constexpr
 inline
 bool
@@ -96,6 +104,7 @@ isalpha(char c) noexcept
     return isupper(c) || islower(c);
 }
 
+// 0x0000'03FF'0000'0000  0x07FF'FFFE'07FF'FFFE
 constexpr
 inline
 bool
@@ -104,25 +113,27 @@ isalnum(char c) noexcept
     return isalpha(c) || isdigit(c);
 }
 
+// 0xFFFF'FFFE'0000'0000  0x7FFF'FFFF'FFFF'FFFF
 constexpr
 inline
 bool
 isgraph(char c) noexcept
 {
 //  return isalnum(c) || ispunct(c);
-    std::uint64_t const ctype[4] = {0xFFFF'FFFE'0000'0000, 0x7FFF'FFFF'FFFF'FFFF};
-    std::uint8_t uc(c);
-    return ctype[uc >> 6] & (std::uint64_t{1} << (uc & 0x3F));
+    return '!' <= c && c <= '~';
 }
 
+// 0xFFFF'FFFF'0000'0000  0x7FFF'FFFF'FFFF'FFFF
 constexpr
 inline
 bool
 isprint(char c) noexcept
 {
-    return isgraph(c) || c == ' ';
+//  return isgraph(c) || c == ' ';
+    return ' ' <= c && c <= '~';
 }
 
+// 0x0000'0000'FFFF'FFFF  0x8000'0000'0000'0000
 constexpr
 inline
 bool
