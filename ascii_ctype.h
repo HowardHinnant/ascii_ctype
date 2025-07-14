@@ -46,13 +46,16 @@ isdigit(char c) noexcept
     return '0' <= c && c <= '9';
 }
 
-// 0x0000'03FF'0000'0000  0x0000'007E'0000'007E
+// 0x03FF'0000'0000'0000  0x0000'007E'0000'007E
 constexpr
 inline
 bool
 isxdigit(char c) noexcept
 {
-    return isdigit(c) || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f');
+//  return isdigit(c) || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f');
+    std::uint64_t const ctype[4] = {0x03FF'0000'0000'0000, 0x0000'007E'0000'007E};
+    std::uint8_t uc(c);
+    return ctype[uc >> 6] & (std::uint64_t{1} << (uc & 0x3F));
 }
 
 // 0x0000'0000'0000'0000  0x07FF'FFFE'0000'0000
@@ -104,13 +107,16 @@ isalpha(char c) noexcept
     return isupper(c) || islower(c);
 }
 
-// 0x0000'03FF'0000'0000  0x07FF'FFFE'07FF'FFFE
+// 0x03FF'0000'0000'0000  0x07FF'FFFE'07FF'FFFE
 constexpr
 inline
 bool
 isalnum(char c) noexcept
 {
-    return isalpha(c) || isdigit(c);
+//  return isalpha(c) || isdigit(c);
+    std::uint64_t const ctype[4] = {0x03FF'0000'0000'0000, 0x07FF'FFFE'07FF'FFFE};
+    std::uint8_t uc(c);
+    return ctype[uc >> 6] & (std::uint64_t{1} << (uc & 0x3F));
 }
 
 // 0xFFFF'FFFE'0000'0000  0x7FFF'FFFF'FFFF'FFFF

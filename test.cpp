@@ -206,3 +206,17 @@ main()
     }
     std::cout << "Passed\n";
 }
+
+static_assert(ascii::isblank(' '), "");
+static_assert(ascii::isdigit('0'), "");
+static_assert(ascii::isxdigit('0'), "");
+static_assert(ascii::islower('a'), "");
+static_assert(ascii::isupper('A'), "");
+static_assert(ascii::ispunct('.'), "");
+static_assert(ascii::isalpha('c'), "");
+static_assert(ascii::isalnum('c'), "");
+static_assert(ascii::isgraph('c'), "");
+static_assert(ascii::isprint('c'), "");
+static_assert(ascii::iscntrl('\n'), "");
+static_assert(ascii::tolower('A') == 'a', "");
+static_assert(ascii::toupper('a') == 'A', "");
